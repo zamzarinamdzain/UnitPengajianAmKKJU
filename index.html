@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Unit Pengajian Am — Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app-wrapper">
+
+    <!-- ===== SIDEBAR ===== -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-brand">
+        <div class="sidebar-logo">🎓</div>
+        <div class="sidebar-title">
+          <span class="sidebar-title-main">Unit Pengajian Am</span>
+          <span class="sidebar-title-sub">Dashboard</span>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <ul class="nav-list">
+          <li class="nav-item active" data-module="modul-1" onclick="showModule('modul-1')">
+            <span class="nav-icon">📋</span>
+            <span class="nav-label">Pemantauan Aktiviti Unit</span>
+          </li>
+          <li class="nav-item" data-module="modul-2" onclick="showModule('modul-2')">
+            <span class="nav-icon">📊</span>
+            <span class="nav-label">CQI &amp; Pencapaian CLO</span>
+          </li>
+          <li class="nav-item" data-module="modul-3" onclick="showModule('modul-3')">
+            <span class="nav-icon">👨‍🏫</span>
+            <span class="nav-label">Status Tugasan &amp; KPI Pensyarah</span>
+          </li>
+          <li class="nav-item" data-module="modul-4" onclick="showModule('modul-4')">
+            <span class="nav-icon">📅</span>
+            <span class="nav-label">Pelaporan Aktiviti Tahunan</span>
+          </li>
+        </ul>
+      </nav>
+
+      <div class="sidebar-footer">
+        <span class="sidebar-version">v1.0 &mdash; Sesi 2025/2026</span>
+      </div>
+    </aside>
+
+    <!-- ===== MAIN CONTENT ===== -->
+    <div class="main-wrapper">
+
+      <!-- Header -->
+      <header class="top-header">
+        <div class="header-left">
+          <h1 class="header-title">Unit Pengajian Am Dashboard</h1>
+          <p class="header-subtitle" id="header-module-name">Pemantauan Aktiviti Unit</p>
+        </div>
+        <div class="header-right">
+          <div class="header-datetime">
+            <span class="datetime-time" id="live-time">--:--:--</span>
+            <span class="datetime-date" id="live-date">---</span>
+          </div>
+          <div class="header-user">
+            <div class="user-avatar">PA</div>
+            <span class="user-name">Pentadbir Unit</span>
+          </div>
+        </div>
+      </header>
+
+      <!-- Module Sections -->
+      <main class="content-area">
+
+        <!-- Modul 1: Pemantauan Aktiviti Unit -->
+        <section id="modul-1" class="module-section active">
+          <div class="module-header">
+            <h2 class="module-title"><span class="module-icon">📋</span> Pemantauan Aktiviti Unit</h2>
+            <p class="module-desc">Pantau dan urus semua aktiviti unit sepanjang tahun semasa.</p>
+          </div>
+
+          <!-- Toolbar: Dropdown penapis bulan -->
+          <div class="toolbar-row">
+            <label class="toolbar-label" for="filter-bulan">🗓 Tapis Bulan:</label>
+            <select id="filter-bulan" class="filter-select" onchange="renderAktiviti(this.value)">
+              <option value="semua">Semua Bulan</option>
+            </select>
+          </div>
+
+          <!-- Kandungan dinamik: 4 kad + jadual -->
+          <div id="modul-1-content"></div>
+        </section>
+
+        <!-- Modul 2: CQI & Pencapaian CLO -->
+        <section id="modul-2" class="module-section">
+          <div class="module-header">
+            <h2 class="module-title"><span class="module-icon">📊</span> CQI &amp; Pencapaian CLO</h2>
+            <p class="module-desc">Semak pencapaian Course Learning Outcome (CLO) setiap kursus.</p>
+          </div>
+
+          <!-- Grid kursus + carian -->
+          <div id="clo-grid-wrap">
+            <div class="toolbar-row">
+              <label class="toolbar-label" for="clo-carian">🔍 Carian Kursus:</label>
+              <input
+                type="text"
+                id="clo-carian"
+                class="filter-select clo-search-input"
+                placeholder="Taip kod atau nama kursus..."
+                oninput="renderCLO()"
+              />
+              <span class="clo-kiraan" id="clo-kiraan-label"></span>
+            </div>
+            <div id="clo-grid-container"></div>
+          </div>
+
+          <!-- Panel detail kursus (tersembunyi secara lalai) -->
+          <div id="clo-detail-panel" style="display:none;"></div>
+        </section>
+
+        <!-- Modul 3: Status Tugasan & KPI Pensyarah -->
+        <section id="modul-3" class="module-section">
+          <div class="module-header">
+            <h2 class="module-title"><span class="module-icon">👨‍🏫</span> Status Tugasan &amp; KPI Pensyarah</h2>
+            <p class="module-desc">Pantau prestasi KPI dan tugasan setiap pensyarah unit.</p>
+          </div>
+          <div id="modul-3-content"></div>
+        </section>
+
+        <!-- Modul 4: Pelaporan Aktiviti Tahunan -->
+        <section id="modul-4" class="module-section">
+          <div class="module-header">
+            <h2 class="module-title"><span class="module-icon">📅</span> Pelaporan Aktiviti Tahunan</h2>
+            <p class="module-desc">Lihat ringkasan dan statistik aktiviti sepanjang tahun.</p>
+          </div>
+          <div id="modul-4-content"></div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="dashboard-footer">
+          Unit Pengajian Am &nbsp;|&nbsp; Sesi 2025/2026 &nbsp;|&nbsp; v1.0
+        </footer>
+
+      </main>
+    </div><!-- /.main-wrapper -->
+  </div><!-- /.app-wrapper -->
+
+  <script src="app.js"></script>
+</body>
+</html>
